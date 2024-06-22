@@ -1,8 +1,6 @@
 
-
 type FormProps = {
   mealName: string;
-  // setMealNameがuseState由来のReact独自のfunctionの為、「React.～」という型定義になっている
   setMealName: React.Dispatch<React.SetStateAction<string>>;
   getMealData: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
 
