@@ -1,34 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useState} from "react"
+import Header from "./components/Header"
+import Form from "./components/Form"
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+
+  // useStateの型は大半のケースで推測してくれるので、あえて付けなくてもいい
+  const [mealName, setMealName] = useState("");
+
+  const [mealData, setMealData] = useState({
+    id: "",
+    name: "",
+    instructions: "",
+    img: "",
+    source: "",
+    area: "",
+    category: "",
+  })
+
+  const getMealData = async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault;
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`)
+    const jsonData = await response.json();
+
+    // setMealData({
+    //   id: jsonData.meals[0].idMeal,
+    //   name: jsonData.meals[0].strMeal,
+    //   instructions: jsonData.meals[0].strInstructions,
+    //   img: jsonData.meals[0].strMealThumb,
+    //   source: jsonData.meals[0].strYoutube,
+    //   area: jsonData.meals[0].strArea,
+    //   category: jsonData.meals[0].strCategory
+    // })
+
+    const {idMeal, strMeal, strInstructions, strMealThumb, strYoutube, strArea, strCategory} = jsonData.meals[0]
+
+    setMealData({
+      id: idMeal,
+      name: strMeal,
+      instructions: strInstructions,
+      img: strMealThumb,
+      source: strYoutube,
+      area: strArea,
+      category: strCategory
+    })
+
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <Header />
+      <h1>こんにちは</h1>
+      <Form setMealName={setMealName} getMealData={getMealData}/>
+    </div>
   )
 }
 
