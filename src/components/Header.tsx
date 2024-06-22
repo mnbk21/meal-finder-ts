@@ -1,4 +1,6 @@
 
+import headerImg from "../assets/header-image.svg"
+
 // type HeaderProps = {
 //   text: string;
 //   time: number;
@@ -12,7 +14,7 @@ const Header = ()=> {
 
   return (
     <header>
-      Header
+      <a href="/"><img src={headerImg} alt="header-image" /></a>
     </header>
   )
 }

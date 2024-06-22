@@ -1,13 +1,15 @@
 import {useState} from "react"
-import Header from "./components/Header"
+import Layout from "./components/Layout"
 import Form from "./components/Form"
 import Recipe from "./components/Recipe"
+import Loading from "./components/Loading"
+import "./App.css"
 
 const App = () => {
 
   // useStateの型は大半のケースで推測してくれるので、あえて付けなくてもいい
+  const [loading, setLoading] = useState(false)
   const [mealName, setMealName] = useState("");
-
   const [mealData, setMealData] = useState({
     id: "",
     name: "",
@@ -20,6 +22,7 @@ const App = () => {
 
   const getMealData = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setLoading(true)
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`)
     const jsonData = await response.json();
 
@@ -44,16 +47,18 @@ const App = () => {
       area: strArea,
       category: strCategory
     })
+    setMealName("")
+    setLoading(false)
 
   }
 
   return (
-    <div>
-      <Header />
-      <h1>こんにちは</h1>
-      <Form setMealName={setMealName} getMealData={getMealData}/>
-      <Recipe mealData={mealData}/>
-    </div>
+
+    <Layout>
+      <Form setMealName={setMealName} getMealData={getMealData} mealName={mealName}/>
+      {loading ? <Loading /> : <Recipe mealData={mealData}/>}
+    </Layout>
+
   )
 }
 
