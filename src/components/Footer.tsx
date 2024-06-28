@@ -2,7 +2,7 @@
 const Footer = () => {
   return (
     <footer>
-      {new Date().getFullYear()} MealFinder TS
+      {new Date().getFullYear()} MealFinder
     </footer>
   )
 
